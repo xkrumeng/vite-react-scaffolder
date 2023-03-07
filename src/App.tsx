@@ -1,10 +1,11 @@
 import { useState } from 'react'
+import rerender from 'react-test-renderer'
 import reactLogo from './assets/react.svg'
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
-
+  console.log(rerender)
   return (
     <div className="App">
       <div>
