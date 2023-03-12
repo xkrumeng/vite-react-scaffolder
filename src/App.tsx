@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import rerender from 'react-test-renderer'
 import reactLogo from './assets/react.svg'
+import Title from '@/compoments/Title'
+
 import './App.css'
 
 function App() {
