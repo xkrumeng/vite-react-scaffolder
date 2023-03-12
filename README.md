@@ -126,7 +126,9 @@ Done in 4.95s.
 # @testing-library/user-event
 # @testing-library/jest-dom
 # identity-obj-proxy
-pnpm add -D @testing-library/react @testing-library/user-event @testing-library/jest-dom identity-obj-proxy react-test-renderer @types/react-test-renderer
+# @types/testing-library__jest-dom
+
+pnpm add -D @testing-library/react @testing-library/user-event @testing-library/jest-dom identity-obj-proxy react-test-renderer @types/react-test-renderer @types/testing-library__jest-dom 
 ```
 
 在根目录创建 **jest.setup.ts** 
