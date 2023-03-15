@@ -1,14 +1,14 @@
-import '@testing-library/jest-dom/extend-expect';
-import server from "./mockServer/server";
+import '@testing-library/jest-dom/extend-expect'
+import server from './mockServer/server'
 
 beforeAll(() => {
-    server.listen()
+  server.listen()
 })
 
 afterEach(() => {
-    server.resetHandlers()
+  server.resetHandlers()
 })
 
 afterAll(() => {
-    server.close()
+  server.close()
 })

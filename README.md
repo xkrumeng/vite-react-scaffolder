@@ -127,28 +127,166 @@ Done in 4.95s.
 # @testing-library/jest-dom
 # identity-obj-proxy
 # @types/testing-library__jest-dom
+# msw
 
-pnpm add -D @testing-library/react @testing-library/user-event @testing-library/jest-dom identity-obj-proxy react-test-renderer @types/react-test-renderer @types/testing-library__jest-dom 
+pnpm add -D @testing-library/react @testing-library/user-event @testing-library/jest-dom identity-obj-proxy react-test-renderer @types/react-test-renderer @types/testing-library__jest-dom msw
 ```
 
-在根目录创建 **jest.setup.ts** 
+jest 的详细配置参考代码
 
+
+## 3. 集成antd 与 tailwindcss
+
+```bash
+# 安装 antd
+pnpm add antd @ant-design/icons
+
+# 安装 tailwindcss
+pnpm add -D tailwindcss postcss autoprefixer
+
+npx tailwindcss init -p
+```
+
+**tailwind.config.cjs** 配置如下：
+
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}"
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
+```
+
+```css
+/** src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
 ```ts
-import '@testing-library/jest-dom/extend-expect';
-```
-
-修改 **jest.config.ts** 如下:
-
-```ts
-
+// src/main.tsx
+...
+import './index.css'
+...
 
 ```
 
+## 4. 集成Redux
+```
+pnpm add @reduxjs/toolkit react-redux
+```
+创建store目录，在目录下创建需要的 **reducers**, 以counter为例。我们在 **src/store/reducers** 下创建了counter的reducers. 在 **src/store/index.ts**
+创建store并导出。
 
+我们在 **main.tsx** 把我们的状态store绑定到我们APP上
+```tsx
+...ts
+import store from './store'
 
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+)
+```
+
+使用store示例如下：
+```tsx
+// src/hooks/reduxHooks.ts
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+import type { RootState, AppDispatch } from '../store'
+
+export const useAppDispath: () => AppDispatch = useDispatch
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+
+// src/App.tsx
+import { Button } from 'antd'
+import { useAppDispath, useAppSelector } from './hooks/reduxHooks'
+import { decrement, increment, incrementByAmount } from './store/reducers/counter'
+
+function App() {
+  const count = useAppSelector((state) => state.counter.value)
+  const dispatch = useAppDispath()
+  return (
+    <div className="w-[200px] flex flex-wrap mx-auto">
+      <h2 className="text-center text-lg font-bold text-indigo-600">{count}</h2>
+      <Button onClick={() => dispatch(increment())}>加1</Button>
+      <Button onClick={() => dispatch(decrement())}>减1</Button>
+      <Button onClick={() => dispatch(incrementByAmount(6))}>加6</Button>
+    </div>
+  )
+}
+
+export default App
+```
+
+## 5 配置eslint, prettier
+```bash
+# eslint
+pnpm add -D eslint
+npx eslint --init
+
+# prettier
+ pnpm add -D prettier
+# 配置见.prettierrc.js文件
+
+# eslint + prettier
+pnpm add -D eslint-config-prettier eslint-plugin-prettier
+```
+```json
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended"
+    ],
+    "overrides": [
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint",
+        "prettier"
+    ],
+    "rules": {
+        "prettier/prettier": "error",
+        "arrow-body-style": "off",
+        "prefer-arrow-callback": "off"
+    }
+}
+
+```
+接下来在 **package.json** 的 **script** 中添加命令。
+
+```json
+{
+    "script": {
+        "lint": "eslint --ext .js,.jsx,.ts,.tsx --fix --quiet ./"
+    }
+}
+```
 ## 附 插件官方文档地址
 - [vitejs 中文官方文档](https://cn.vitejs.dev/)
 - [esbuild 中文官方文档](https://esbuild.docschina.org/)
 - [swc 官方文档](https://swc.rs/)
 - [Jest 官方文档](https://jestjs.io/zh-Hans/)
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+- [MSW - Mock Service Worker](https://mswjs.io/)
+- [TailwindCss官方文档](https://tailwindcss.com/)
+- [Redux 官网](https://cn.react-redux.js.org)

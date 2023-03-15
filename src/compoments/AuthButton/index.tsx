@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { Button, ButtonProps, message } from "antd";
 import classnames from "classnames";
-import styles from "./styles.module.less";
+import styles from "./styles.module.css";
 import { getUserRole, UserRoleType } from "@/apis/user";
 
 type Props = ButtonProps;
