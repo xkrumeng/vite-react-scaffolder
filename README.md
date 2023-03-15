@@ -281,6 +281,19 @@ pnpm add -D eslint-config-prettier eslint-plugin-prettier
     }
 }
 ```
+
+Vite 中引入 ESLint
+
+```bash
+pnpm add -D vite-plugin-eslint
+```
+```js
+// **vite.config.ts**
+```
+
+
+## husky =
+
 ## 附 插件官方文档地址
 - [vitejs 中文官方文档](https://cn.vitejs.dev/)
 - [esbuild 中文官方文档](https://esbuild.docschina.org/)
