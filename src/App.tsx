@@ -18,7 +18,6 @@ function App() {
       <Button onClick={() => dispatch(decrement())}>DeCrement</Button>
 
       <Button onClick={() => dispatch(incrementByAmount(6))}>
-        {' '}
         InCrement + 6
       </Button>
     </div>

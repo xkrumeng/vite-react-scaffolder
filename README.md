@@ -288,18 +288,64 @@ Vite 中引入 ESLint
 pnpm add -D vite-plugin-eslint
 ```
 ```js
-// **vite.config.ts**
+// vite.config.ts
+
 ```
 
 
-## husky =
+## husky + commitlint +lint-staged
+```bash
+pnpm add -D husky lint-staged @commitlint/cli @commitlint/config-conventional
+在 package.json 添加 prepare 命令并运行
+{
+  “script"{
+    ...,
+    "prepare": "husky install"
+  }
+}
+
+yarn prepare
+
+# 给 Husky 添加一个 Hook, 这样每次 **git commit** 之前都会先运行 **npm run lint**, 通过之后才会提交代码
+npx husky add .husky/pre-commit "npm run lint"
+
+```
+我们可以通过 lint-staged 只对暂存区的代码进行检验。在级 **package.json** 添加一个 **lint-staged** 的配置
+
+```bash
+{
+  "lint-staged": {
+    "*.{js,jsx,tsx,ts}": [
+    "npm run lint"
+    ]
+  }
+}
+```
+并在 **.husky/pre-commit** 中替换 **npx lint-staged**。。现在我们每次 **git commit** 前都会对改动的文件进行 Lint 检查了。
+
+### commitlint 配置
+
+在根目录下创建配置文件 **.commitlintrc.cjs**
+
+```js
+module.exports = {
+  extends: ["@commitlint/config-conventional"]
+}
+```
+然后给 **husky** 添加一个 **commit-msg** hook,
+
+```
+npx husky add .husky/commit-msg "npx --no-install commitlint -e $HUSKY_GIT_PARAMS"
+```
+现在提交信息不规范就会被拦截导致提交失败，规范可见 [commitlint](https://commitlint.js.org/#/) ，当然你也可以根据需要修改提交信息规范。
 
 ## 附 插件官方文档地址
 - [vitejs 中文官方文档](https://cn.vitejs.dev/)
+- [TailwindCss官方文档](https://tailwindcss.com/)
+- [Redux 官网](https://cn.react-redux.js.org)
 - [esbuild 中文官方文档](https://esbuild.docschina.org/)
 - [swc 官方文档](https://swc.rs/)
 - [Jest 官方文档](https://jestjs.io/zh-Hans/)
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 - [MSW - Mock Service Worker](https://mswjs.io/)
-- [TailwindCss官方文档](https://tailwindcss.com/)
-- [Redux 官网](https://cn.react-redux.js.org)
+- [typescript-eslint](https://typescript-eslint.io/)
